@@ -1,11 +1,25 @@
 <?xml version="1.0"?>
 <robot name="myrobot">
+
+    <material name="white">
+        <color rgba="1 1 1 1"/>
+    </material>
+
     <link name="base_link">
         <visual>
             <geometry>
                 <cylinder length="0.3" radius="0.4"/>
             </geometry>
         </visual>
+        <collision>
+            <geometry>
+                <cylinder length="0.3" radius="0.2"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="10"/>
+            <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+        </inertial>
     </link>
     <link name="right_wheel">
         <visual>
@@ -15,6 +29,15 @@
             <material name="blue"/>
             <origin rpy="0 1.57075 1.57075" xyz="0 0 0"/>
         </visual>
+        <collision>
+            <geometry>
+                <cylinder length="0.1" radius="0.2"/>
+            </geometry>
+        </collision>
+         <inertial>
+            <mass value="10"/>
+            <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+        </inertial>
     </link>
 
     <link name="left_wheel">
@@ -22,21 +45,32 @@
             <geometry>
                 <cylinder length="0.1" radius="0.2"/>
             </geometry>
-            <material name="blue"/>
+            <material name="white"/>
             <origin rpy="0 1.57075 1.57075" xyz="0 0 0"/>
         </visual>
+        <collision>
+            <geometry>
+                <cylinder length="0.1" radius="0.2"/>
+            </geometry>
+        </collision>
+         <inertial>
+            <mass value="10"/>
+            <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+        </inertial>
     </link>
 
-    <joint name="base_to_right_wheel" type="fixed">
+    <joint name="base_to_right_wheel" type="continuous">
         <parent link="base_link" />
         <child link="right_wheel" />
         <origin xyz="0 -0.2 0" />
+        <axis xyz="0 1 0"/>
     </joint>
 
-    <joint name="base_to_left_wheel" type="fixed">
+    <joint name="base_to_left_wheel" type="continuous">
         <parent link="base_link" />
         <child link="left_wheel" />
         <origin xyz="0 0.2 0" />
+        <axis xyz="0 1 0"/>
     </joint>
 
 
