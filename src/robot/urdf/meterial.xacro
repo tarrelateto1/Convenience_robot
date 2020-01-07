@@ -16,9 +16,9 @@
                 <cylinder length="0.1" radius="0.5"/>
             </geometry>
         </collision>
-           <inertial>
+           <!-- <inertial>
       <mass value="10" />
       <inertia ixx="1.0" ixy="1.0" ixz="1.0" iyy="1.0" iyz="1.0" izz="1.0" />
-    </inertial>
+    </inertial> -->
   </xacro:macro>
 </robot>
