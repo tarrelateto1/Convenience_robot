@@ -19,14 +19,14 @@
 
         <collision name="collision_chassis">
             <geometry>
-                <box size="0.5 0.3 0.07"/>
+                <box size="0.5 0.3 0.17"/>
             </geometry>
         </collision>
 
         <visual>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0 0.05"/>
             <geometry>
-                <box size="0.5 0.3 0.07"/>
+                <box size="0.5 0.3 0.17"/>
             </geometry>
             <material name="blue"/>
         </visual>
@@ -90,7 +90,7 @@
     </link>
 
     <joint name="joint_sensor_laser" type="fixed">
-        <origin xyz="0.15 0 0.05" rpy="0 0 0"/>
+        <origin xyz="0.15 0 0.17" rpy="0 0 0"/>
         <parent link="link_chassis"/>
         <child link="sensor_laser"/>
     </joint>
