@@ -1,16 +1,13 @@
 #! /usr/bin/env python
 
-# import ros stuff
 import rospy
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from tf import transformations
-from std_srvs.srv import *
 
 import math
 
-active_ = False
 pub_ = None
 regions_ = {
         'right': 0,
@@ -26,23 +23,22 @@ state_dict_ = {
     2: 'follow the wall',
 }
 
-def wall_follower_switch(req):
-    global active_
-    active_ = req.data
-    res = SetBoolResponse()
-    res.success = True
-    res.message = 'Done!'
-    return res
-
 def clbk_laser(msg):
     global regions_
     regions_ = {
-        'right':  min(min(msg.ranges[0:143]), 10),
-        'fright': min(min(msg.ranges[144:287]), 10),
-        'front':  min(min(msg.ranges[288:431]), 10),
-        'fleft':  min(min(msg.ranges[432:575]), 10),
-        'left':   min(min(msg.ranges[576:719]), 10),
+        'right':  min(min(msg.ranges[0:199]), 10),
+        'fright': min(min(msg.ranges[200:399]), 10),
+        'front':  min(min(msg.ranges[400:599]), 10),
+        'fleft':  min(min(msg.ranges[600:799]), 10),
+        'left':   min(min(msg.ranges[800:999]), 10),
     }
+    # regions_ = {
+    #     'right':  min(min(msg.ranges[0:143]), 10),
+    #     'fright': min(min(msg.ranges[144:287]), 10),
+    #     'front':  min(min(msg.ranges[288:431]), 10),
+    #     'fleft':  min(min(msg.ranges[432:575]), 10),
+    #     'left':   min(min(msg.ranges[576:713]), 10),
+    # }
     
     take_action()
 
@@ -58,10 +54,9 @@ def take_action():
     msg = Twist()
     linear_x = 0
     angular_z = 0
-    
     state_description = ''
     
-    d = 1.5
+    d = 0.8
     
     if regions['front'] > d and regions['fleft'] > d and regions['fright'] > d:
         state_description = 'case 1 - nothing'
@@ -94,12 +89,12 @@ def take_action():
 def find_wall():
     msg = Twist()
     msg.linear.x = 0.2
-    msg.angular.z = -0.3
+    # msg.angular.z = -0.3
     return msg
 
 def turn_left():
     msg = Twist()
-    msg.angular.z = 0.3
+    msg.angular.z = -0.3
     return msg
 
 def follow_the_wall():
@@ -110,22 +105,16 @@ def follow_the_wall():
     return msg
 
 def main():
-    global pub_, active_
+    global pub_
     
     rospy.init_node('reading_laser')
     
     pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
     
-    sub = rospy.Subscriber('/m2wr/laser/scan', LaserScan, clbk_laser)
-    
-    srv = rospy.Service('wall_follower_switch', SetBool, wall_follower_switch)
+    sub = rospy.Subscriber('/robot/laser/scan', LaserScan, clbk_laser)
     
     rate = rospy.Rate(20)
     while not rospy.is_shutdown():
-        if not active_:
-            rate.sleep()
-            continue
-        
         msg = Twist()
         if state_ == 0:
             msg = find_wall()

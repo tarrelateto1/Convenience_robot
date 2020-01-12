@@ -17,11 +17,11 @@ def clbk_laser(msg):
         of 720 readings and converts it into 5 readings 
     """
     regions = {
-        "right": min(min(msg.ranges[500:699]), 10),
-        "fright": min(min(msg.ranges[700:899]), 10),
-        "front": min(min(msg.ranges[900:1099]), 10),
-        "fleft": min(min(msg.ranges[1100:1299]), 10),
-        "left": min(min(msg.ranges[1300:1499]), 10),
+       'right':  min(min(msg.ranges[0:199]), 10),
+        'fright': min(min(msg.ranges[200:399]), 10),
+        'front':  min(min(msg.ranges[400:599]), 10),
+        'fleft':  min(min(msg.ranges[600:799]), 10),
+        'left':   min(min(msg.ranges[800:999]), 10),
     }
 
     take_action(regions)
@@ -88,7 +88,7 @@ def main():
     """
         This is the entry point of the file. 
         This function sets up a Subscriber 
-        to the laser scan topic /m2wr/laser/scan 
+        to the laser scan topic /robot/laser/scan 
         and a Publisher to /cmd_vel topic.
     """
     global pub
@@ -97,7 +97,7 @@ def main():
 
     pub = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
 
-    sub = rospy.Subscriber("/m2wr/laser/scan", LaserScan, clbk_laser)
+    sub = rospy.Subscriber("/robot/laser/scan", LaserScan, clbk_laser)
 
     rospy.spin()
 

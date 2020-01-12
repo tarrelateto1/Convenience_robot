@@ -52,11 +52,11 @@ def clbk_odom(msg):
 def clbk_laser(msg):
     global regions_
     regions_ = {
-        'right':  min(min(msg.ranges[0:143]), 10),
-        'fright': min(min(msg.ranges[144:287]), 10),
-        'front':  min(min(msg.ranges[288:431]), 10),
-        'fleft':  min(min(msg.ranges[432:575]), 10),
-        'left':   min(min(msg.ranges[576:719]), 10),
+        'right':  min(min(msg.ranges[0:199]), 10),
+        'fright': min(min(msg.ranges[200:399]), 10),
+        'front':  min(min(msg.ranges[400:599]), 10),
+        'fleft':  min(min(msg.ranges[600:799]), 10),
+        'left':   min(min(msg.ranges[800:999]), 10),
     }
 
 def change_state(state):
@@ -84,7 +84,7 @@ def main():
     
     rospy.init_node('bug0')
     
-    sub_laser = rospy.Subscriber('/m2wr/laser/scan', LaserScan, clbk_laser)
+    sub_laser = rospy.Subscriber('/robot/laser/scan', LaserScan, clbk_laser)
     sub_odom = rospy.Subscriber('/odom', Odometry, clbk_odom)
     
     rospy.wait_for_service('/go_to_point_switch')
@@ -97,7 +97,7 @@ def main():
     
     # set robot position
     model_state = ModelState()
-    model_state.model_name = 'm2wr'
+    model_state.model_name = 'robot'
     model_state.pose.position.x = initial_position_.x
     model_state.pose.position.y = initial_position_.y
     resp = srv_client_set_model_state(model_state)
